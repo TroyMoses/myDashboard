@@ -27,13 +27,13 @@ Make sure you have the following installed:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/TroyMoses/adminDashboard.git
+   git clone https://github.com/TroyMoses/myDashboard.git
    ```
 
 2. Change into the project directory:
 
    ```bash
-   cd adminDashboard
+   cd myDashboard
    ```
 
 3. Install the dependencies:

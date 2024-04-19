@@ -25,7 +25,7 @@ const Transactions = () => {
                   height={40}
                   className={styles.userImage}
                 />
-                John Doe
+                Troy Moses
               </div>
             </td>
             <td>
@@ -46,7 +46,7 @@ const Transactions = () => {
                   height={40}
                   className={styles.userImage}
                 />
-                John Doe
+                Mugabi Moses
               </div>
             </td>
             <td>
@@ -65,7 +65,7 @@ const Transactions = () => {
                   height={40}
                   className={styles.userImage}
                 />
-                John Doe
+                Francis Lub
               </div>
             </td>
             <td>
@@ -86,7 +86,7 @@ const Transactions = () => {
                   height={40}
                   className={styles.userImage}
                 />
-                John Doe
+                Mr Emma
               </div>
             </td>
             <td>

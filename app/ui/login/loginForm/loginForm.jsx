@@ -15,7 +15,7 @@ const LoginForm = () => {
       <input type="text" placeholder="username" name="username" />
       <input type="password" placeholder="password" name="password" />
       {/* <button>Login</button> */}
-      <Link href={"/dashboard"}>
+      <Link href="/dashboard">
         <button>
           Login
         </button>

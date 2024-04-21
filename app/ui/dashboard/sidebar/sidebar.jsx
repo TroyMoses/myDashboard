@@ -1,6 +1,7 @@
 import Image from "next/image";
 import MenuLink from "./menuLink/menuLink";
 import styles from "./sidebar.module.css";
+import Link from "next/link";
 import {
   MdDashboard,
   MdSupervisedUserCircle,
@@ -119,10 +120,12 @@ const Sidebar = async () => {
           await signOut();
         }}
       >
-        <button className={styles.logout}>
-          <MdLogout />
-          Logout
-        </button>
+        <Link href="/">
+          <button className={styles.logout}>
+            <MdLogout />
+            Logout
+          </button>
+        </Link>
       </form>
     </div>
   );

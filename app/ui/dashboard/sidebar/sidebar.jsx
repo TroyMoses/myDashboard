@@ -93,7 +93,7 @@ const Sidebar = async () => {
         /> */}
         <Image
           className={styles.userImage}
-          src={"/noavatar.png"}
+          src={"/profile.jpg"}
           alt=""
           width="50"
           height="50"

@@ -58,11 +58,25 @@ export async function uploadPhoto(formData) {
         // Delete photo files in temp folder after successful upload
         newFiles.map(file => fs.unlink(file.filepath))
 
+        revalidatePath('/dashboard/products')
         return { msg: 'Upload Success' }
 
-        revalidatePath('/dashboard/products')
 
     } catch (error) {
         return { errMsg: error.message }
     }
 }
+
+export async function getAllPhotos() {
+    try {
+        const { resources } = await cloudinary.v2.search.expression(
+            'folder:nextjs_upload/*'
+        ).sort_by('created_at', 'desc').max_results(500).execute()
+        
+        return resources;
+    } catch (error) {
+        return { errMsg: error.message }
+    }
+}
+
+

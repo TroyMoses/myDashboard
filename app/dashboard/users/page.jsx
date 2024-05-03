@@ -5,11 +5,14 @@ import Search from "../../ui/dashboard/search/search";
 import styles from "../../ui/dashboard/users/users.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import UploadForm from "../../../components/UploadForm";
+import { getAllPhotos } from "../../../actions/UploadActions";
 
 const UsersPage = async ({ searchParams }) => {
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
   const { count, users } = await fetchUsers(q, page);
+  const data = await getAllPhotos()
 
   return (
     <div className={styles.container}>
@@ -43,6 +46,9 @@ const UsersPage = async ({ searchParams }) => {
                     className={styles.userImage}
                   />
                   {user.username}
+                </div>
+                <div>
+                  <UploadForm />
                 </div>
               </td>
               <td>{user.email}</td>

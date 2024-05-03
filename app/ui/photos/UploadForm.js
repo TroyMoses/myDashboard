@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import PhotoCard from './PhotoCard';
 import ButtonSubmit from './ButtonSubmit';
+import { uploadPhoto } from '../../../actions/UploadActions';
 
 const UploadForm = () => {
     const formRef = useRef();

@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import UploadForm from "../../../components/UploadForm";
 import { getAllPhotos } from "../../../actions/UploadActions";
+import PhotoList from "../../../components/PhotoList";
 
 const UsersPage = async ({ searchParams }) => {
   const q = searchParams?.q || "";
@@ -49,6 +50,7 @@ const UsersPage = async ({ searchParams }) => {
                 </div>
                 <div>
                   <UploadForm />
+                  <PhotoList photos={photos || []}/>
                 </div>
               </td>
               <td>{user.email}</td>

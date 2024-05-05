@@ -5,6 +5,16 @@ const nextConfig = {
     experimental: {
       serverActions: true
     },
+    images: {
+      domains: ["res.cloudinary.com"],
+      
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'images.pexels.com',
+        },
+      ],
+    },
     
     webpack: (config, { isServer }) => {
       config.module.rules.push({
@@ -13,15 +23,7 @@ const nextConfig = {
       });
   
       return config;
-    },
-    images: {
-      remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: 'images.pexels.com',
-        },
-      ],
-    },
+    }
   };
   
   module.exports = nextConfig;

@@ -46,6 +46,9 @@ async function uploadPhotosToCloudinary(newFiles) {
     return await Promise.all(multiplePhotosPromise)
 }
 
+const delay = (delayInms) => {
+    return new Promise(resolve => setTimeout(resolve, delayInms));
+}
 
 export async function uploadPhoto(formData) {
     try {
@@ -58,7 +61,10 @@ export async function uploadPhoto(formData) {
         // Delete photo files in temp folder after successful upload
         newFiles.map(file => fs.unlink(file.filepath))
 
-        revalidatePath('/dashboard/products')
+        // Delay bout 2s to update cloudinary database then revalidatePath => call getAllPhotos()
+        // await delay(2000)
+
+        // revalidatePath('/dashboard/products')
         return { msg: 'Upload Success' }
 
 
@@ -79,4 +85,18 @@ export async function getAllPhotos() {
     }
 }
 
+export async function deletePhoto(public_id) {
+    try {
+        await cloudinary.v2.uploader.destroy(public_id)
 
+        revalidatePath("dashboard/products")
+        return {msg: 'Delete Success!'};
+    } catch (error) {
+        return { errMsg: error.message }
+    }
+}
+
+
+export async function revalidate(path){
+    revalidatePath(path)
+}

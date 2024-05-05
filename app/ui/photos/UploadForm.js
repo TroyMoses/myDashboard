@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import PhotoCard from './PhotoCard';
 import ButtonSubmit from './ButtonSubmit';
-import { uploadPhoto } from '../../../actions/UploadActions';
+import { revalidate, uploadPhoto } from '../../../actions/UploadActions';
 
 const UploadForm = () => {
     const formRef = useRef();
@@ -23,7 +23,7 @@ const UploadForm = () => {
 
     async function handleUpload() {
         if(!files.length) return alert("No image files are selected")
-        if(files.length > 3) return alert("Upload upto 3 images")
+        // if(files.length > 3) return alert("Upload upto 3 images")
 
         const formData = new FormData();
 
@@ -32,6 +32,13 @@ const UploadForm = () => {
         })
 
         const res = await uploadPhoto(formData)
+        if(res?.msg) alert(`Success: ${res?.msg}`) // <==> await delay(200)
+        if(res?.errMsg) alert(`Error: ${res?.errMsg}`)
+
+        setFiles([])
+        formRef.current.reset()
+        // wait about 2s to update cloudinary database
+        revalidate('/dashboard/products')
     }
 
     return (

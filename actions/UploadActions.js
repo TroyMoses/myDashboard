@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import os from 'os';
 import cloudinary from 'cloudinary';
 import { revalidatePath } from 'next/cache';
+import Photo from '../app/lib/models';
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -64,7 +65,15 @@ export async function uploadPhoto(formData) {
         // Delay bout 2s to update cloudinary database then revalidatePath => call getAllPhotos()
         // await delay(2000)
 
-        // revalidatePath('/dashboard/products')
+        // Save photo files to my mongodb => no delay needed.
+        const newPhotos = photos.map(photo => {
+            const newPhoto = new Photo({public_id: photo.public_id, secure_url: photo.secure_url})
+            return newPhoto;
+        })
+
+        await Photo.insertMany(newPhotos);
+
+        revalidatePath('/dashboard/products')
         return { msg: 'Upload Success' }
 
 
@@ -75,10 +84,16 @@ export async function uploadPhoto(formData) {
 
 export async function getAllPhotos() {
     try {
-        const { resources } = await cloudinary.v2.search.expression(
-            'folder:nextjs_upload/*'
-        ).sort_by('created_at', 'desc').max_results(500).execute()
+        // From Cloudinary database
+        // const { resources } = await cloudinary.v2.search.expression(
+        //     'folder:nextjs_upload/*'
+        // ).sort_by('created_at', 'desc').max_results(500).execute()
         
+        // From my mongodb database
+        const photos = await Photo.find().sort('-createdAt')
+
+        const resources = photos.map(photo => ({...photo._doc, _id: photo._id.toString()}))
+
         return resources;
     } catch (error) {
         return { errMsg: error.message }
@@ -87,7 +102,10 @@ export async function getAllPhotos() {
 
 export async function deletePhoto(public_id) {
     try {
-        await cloudinary.v2.uploader.destroy(public_id)
+        await Promise.all([
+            Photo.findOneAndDelete({public_id}),
+            cloudinary.v2.uploader.destroy(public_id)
+        ])
 
         revalidatePath("dashboard/products")
         return {msg: 'Delete Success!'};

@@ -13,7 +13,7 @@ const UsersPage = async ({ searchParams }) => {
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
   const { count, users } = await fetchUsers(q, page);
-  const data = await getAllPhotos()
+  const photos = await getAllPhotos()
 
   return (
     <div className={styles.container}>

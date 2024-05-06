@@ -1,10 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     // ... other configurations (if any)
-
-    experimental: {
-      serverActions: true
-    },
     images: {
       domains: ["res.cloudinary.com"],
       

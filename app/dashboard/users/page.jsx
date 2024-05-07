@@ -48,10 +48,6 @@ const UsersPage = async ({ searchParams }) => {
                   />
                   {user.username}
                 </div>
-                <div>
-                  <UploadForm />
-                  <PhotoList photos={photos || []}/>
-                </div>
               </td>
               <td>{user.email}</td>
               <td>{user.createdAt?.toString().slice(4, 16)}</td>

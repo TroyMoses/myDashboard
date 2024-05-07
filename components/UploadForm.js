@@ -3,6 +3,9 @@
 import { useRef, useState } from 'react';
 import PhotoCard from './PhotoCard';
 import ButtonSubmit from './ButtonSubmit';
+import styles from '../app/ui/dashboard/products/addProduct/addProduct.module.css';
+import { addProduct } from '../app/lib/actions';
+import { uploadPhoto } from '../actions/UploadActions';
 
 const UploadForm = () => {
     const formRef = useRef();
@@ -21,7 +24,7 @@ const UploadForm = () => {
     }
 
     async function handleUpload() {
-        if(!files.length) return alert("No image files are selected")
+        if(!files) return alert("No image files are selected")
         if(files.length > 3) return alert("Upload upto 3 images")
 
         const formData = new FormData();
@@ -34,28 +37,71 @@ const UploadForm = () => {
     }
 
     return (
-        <form action={handleUpload} ref={formRef}>
+        
+        <div className={styles.container}>
+            <form action={handleUpload} ref={formRef} className={styles.form}>
+            <input type="text" placeholder="title" name="title" required />
+            <select name="cat" id="cat">
+                <option value="general">Choose a Category</option>
+                <option value="kitchen">Kitchen</option>
+                <option value="phone">Phone</option>
+                <option value="computer">Computer</option>
+            </select>
+            <input type="number" placeholder="price" name="price" required />
+            <input type="number" placeholder="stock" name="stock" required />
+            <input type="text" placeholder="color" name="color" />
+            <input type="text" placeholder="size" name="size" />
+            <textarea
+                required
+                name="desc"
+                id="desc"
+                rows="16"
+                placeholder="Description"
+            ></textarea>
+            <div style={{background: '#ddd', minHeight: 200, margin: '10px 0', padding:10}}>
+                <input type='file' accept='image/*' multiple onChange={handleInputFiles}/>
+                <h5 style={{color: 'red'}}>
+                    (*) Only accept image file less than 1mb in size. Upto 3 photo files
+                </h5>
 
-        <div style={{background: '#ddd', minHeight: 200, margin: '10px 0', padding:10}}>
-            <input type='file' accept='image/*' multiple onChange={handleInputFiles}/>
-            <h5 style={{color: 'red'}}>
-                (*) Only accept image file less than 1mb in size. Upto 3 photo files
-            </h5>
-
-            {/* Preview Images */}
-            <div style={{display: 'flex', gap: 10, flexWrap: 'wrap', margin: '10px 0'}}>
-                {
-                    files.map((file, index) => (
-                        <PhotoCard key={index} url={URL.createObjectURL(file)}/>
-                    ))
-                }
+                {/* Preview Images */}
+                <div style={{display: 'flex', gap: 10, flexWrap: 'wrap', margin: '10px 0'}}>
+                    {
+                        files.map((file, index) => (
+                            <PhotoCard key={index} url={URL.createObjectURL(file)}/>
+                        ))
+                    }
+                </div>
             </div>
+
+            {/* <ButtonSubmit value="Upload to Cloudinary"/> */}
+            <button>Upload Product</button>
+            </form>
         </div>
-
-        <ButtonSubmit value="Upload to Cloudinary"/>
-
-        </form>
     )
+    // return (
+    //     <form action={handleUpload} ref={formRef}>
+
+    //     <div style={{background: '#ddd', minHeight: 200, margin: '10px 0', padding:10}}>
+    //         <input type='file' accept='image/*' multiple onChange={handleInputFiles}/>
+    //         <h5 style={{color: 'red'}}>
+    //             (*) Only accept image file less than 1mb in size. Upto 3 photo files
+    //         </h5>
+
+    //         {/* Preview Images */}
+    //         <div style={{display: 'flex', gap: 10, flexWrap: 'wrap', margin: '10px 0'}}>
+    //             {
+    //                 files.map((file, index) => (
+    //                     <PhotoCard key={index} url={URL.createObjectURL(file)}/>
+    //                 ))
+    //             }
+    //         </div>
+    //     </div>
+
+    //     <ButtonSubmit value="Upload to Cloudinary"/>
+
+    //     </form>
+    // )
 }
 
 export default UploadForm;

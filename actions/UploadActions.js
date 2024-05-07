@@ -6,7 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 import os from 'os';
 import cloudinary from 'cloudinary';
 import { revalidatePath } from 'next/cache';
-import Photo from '../app/lib/models';
+import Photo, { Product } from '../app/lib/models';
+import { connectToDB } from '../app/lib/utils';
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -52,7 +53,11 @@ const delay = (delayInms) => {
 }
 
 export async function uploadPhoto(formData) {
+    const { title, desc, price, stock, color, size } =
+    Object.fromEntries(formData);
+
     try {
+        connectToDB();
         // Save photo files to temp folder 
         const newFiles = await savePhotosToLocal(formData)
 
@@ -66,12 +71,26 @@ export async function uploadPhoto(formData) {
         // await delay(2000)
 
         // Save photo files to my mongodb => no delay needed.
-        const newPhotos = photos.map(photo => {
-            const newPhoto = new Photo({public_id: photo.public_id, secure_url: photo.secure_url})
-            return newPhoto;
-        })
+        // const newPhotos = photos.map(photo => {
+        //     const newPhoto = new Photo({public_id: photo.public_id, secure_url: photo.secure_url})
+        //     return newPhoto;
+        // })
 
-        await Photo.insertMany(newPhotos);
+        // await Photo.insertMany(newPhotos);
+
+        const newPhotos = photos.map(async photo => {
+            const newProduct = new Product({
+                title,
+                desc,
+                price,
+                stock,
+                color,
+                size,
+                public_id: photo.public_id,
+                secure_url: photo.secure_url
+            });
+            await newProduct.save();
+        })
 
         revalidatePath('/dashboard/products')
         return { msg: 'Upload Success' }

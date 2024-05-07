@@ -60,15 +60,18 @@ const productSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-    img: {
-      type: String,
-    },
     color: {
       type: String,
     },
     size: {
       type: String,
     },
+    public_id: {
+      type: String,
+    },
+    secure_url: {
+      type: String,
+    }
   },
   { timestamps: true }
 );

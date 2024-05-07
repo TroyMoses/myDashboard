@@ -53,19 +53,19 @@ const delay = (delayInms) => {
 }
 
 export async function uploadPhoto(formData) {
-    const { title, desc, price, stock, color, size } =
+    const { title, category, desc, price, stock, color, size, image } =
     Object.fromEntries(formData);
 
     try {
         connectToDB();
         // Save photo files to temp folder 
-        const newFiles = await savePhotosToLocal(formData)
+        // const newFiles = await savePhotosToLocal(formData)
 
         // Upload to the cloud after saving the files to the temp folder
-        const photos = await uploadPhotosToCloudinary(newFiles)
+        // const photos = await uploadPhotosToCloudinary(newFiles)
 
         // Delete photo files in temp folder after successful upload
-        newFiles.map(file => fs.unlink(file.filepath))
+        // newFiles.map(file => fs.unlink(file.filepath))
 
         // Delay bout 2s to update cloudinary database then revalidatePath => call getAllPhotos()
         // await delay(2000)
@@ -78,19 +78,18 @@ export async function uploadPhoto(formData) {
 
         // await Photo.insertMany(newPhotos);
 
-        const newPhotos = photos.map(async photo => {
-            const newProduct = new Product({
-                title,
-                desc,
-                price,
-                stock,
-                color,
-                size,
-                public_id: photo.public_id,
-                secure_url: photo.secure_url
-            });
-            await newProduct.save();
-        })
+        const newProduct = new Product({
+            title,
+            cat,
+            desc,
+            price,
+            stock,
+            color,
+            size,
+            image // Store the base64 encoded image data directly
+        });
+
+        await newProduct.save();
 
         revalidatePath('/dashboard/products')
         return { msg: 'Upload Success' }

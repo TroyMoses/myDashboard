@@ -44,7 +44,10 @@ const productSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      unique: true,
+    },
+    category: {
+      type: String,
+      required: true,
     },
     desc: {
       type: String,
@@ -66,12 +69,9 @@ const productSchema = new mongoose.Schema(
     size: {
       type: String,
     },
-    public_id: {
-      type: String,
+    image: { // Add image field
+      type: String, // Store as base64 encoded string
     },
-    secure_url: {
-      type: String,
-    }
   },
   { timestamps: true }
 );

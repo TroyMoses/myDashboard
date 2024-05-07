@@ -4,7 +4,6 @@ import { useRef, useState } from 'react';
 import PhotoCard from './PhotoCard';
 import ButtonSubmit from './ButtonSubmit';
 import styles from '../app/ui/dashboard/products/addProduct/addProduct.module.css';
-import { addProduct } from '../app/lib/actions';
 import { uploadPhoto } from '../actions/UploadActions';
 
 const UploadForm = () => {
@@ -23,17 +22,33 @@ const UploadForm = () => {
         setFiles(prev => [...newFiles, ...prev])
     }
 
-    async function handleUpload() {
-        if(!files) return alert("No image files are selected")
-        if(files.length > 3) return alert("Upload upto 3 images")
+    async function handleUpload(event) {
+        event.preventDefault();
 
         const formData = new FormData();
 
-        files.forEach(file => {
-            formData.append('files', file)
-        })
+        const imageFile = event.target.elements.files[0]; // Get the first selected image
 
-        const res = await uploadPhoto(formData)
+        if (!imageFile) return alert("No image file is selected");
+
+        formData.append('title', document.querySelector('input[name="title"]').value);
+        formData.append('category', document.querySelector('select[name="cat"]').value);
+        formData.append('desc', document.querySelector('textarea[name="desc"]').value);
+        formData.append('price', document.querySelector('input[name="price"]').value);
+        formData.append('stock', document.querySelector('input[name="stock"]').value);
+        formData.append('color', document.querySelector('input[name="color"]').value);
+        formData.append('size', document.querySelector('input[name="size"]').value);
+
+        // Read image data using FileReader
+        const reader = new FileReader();
+        reader.readAsDataURL(imageFile);
+        reader.onload = async (event) => {
+            const imageData = event.target.result; // Base64 encoded image data
+            formData.append('image', imageData); // Add image data to FormData
+            await uploadPhoto(formData); // Call function to save to MongoDB
+        };
+
+        // const res = await uploadPhoto(formData);
     }
 
     return (
@@ -74,8 +89,8 @@ const UploadForm = () => {
                 </div>
             </div>
 
-            {/* <ButtonSubmit value="Upload to Cloudinary"/> */}
-            <button type='submit'>Upload Product</button>
+            <ButtonSubmit value="Upload Product"/>
+            {/* <button type='submit'>Upload Product</button> */}
             </form>
         </div>
     )

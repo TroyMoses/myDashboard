@@ -75,7 +75,7 @@ const UploadForm = () => {
             </div>
 
             {/* <ButtonSubmit value="Upload to Cloudinary"/> */}
-            <button>Upload Product</button>
+            <button type='submit'>Upload Product</button>
             </form>
         </div>
     )

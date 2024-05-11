@@ -35,7 +35,15 @@ const AddProductPage = () => {
           id="desc"
           rows="16"
           placeholder="Description"
-        ></textarea>
+        ></textarea><br/>
+        <div>
+          <label htmlFor="title">Title: </label><br/>
+          <input className='mx-4 my-3 text-black' type="text" id="title"  />
+          <br />
+          <label htmlFor="image">Image:</label><br/><br/>
+          <input className='mx-2' type="file" id="image" accept="image/*" />
+          <br />
+        </div>
         <button type="submit">Add Child</button>
       </form>
     </div>

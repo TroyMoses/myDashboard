@@ -1,4 +1,5 @@
-import { Child, User } from "./models";
+import { Child } from "./models";
+import { User } from "./models";
 import { connectToDB } from "./utils";
 
 export const fetchUsers = async (q, page) => {

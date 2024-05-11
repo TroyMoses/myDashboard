@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react';
-import upload from '../../lib/multer'; // Import Multer configuration
+import upload from '../../api/upload' // Import Multer configuration
+import Photo from '../../lib/models';
 
 const ImageUploadForm = () => {
   const [title, setTitle] = useState('');
@@ -15,24 +16,21 @@ const ImageUploadForm = () => {
       formData.append('title', title);
       formData.append('image', selectedFile);
 
-      await upload.single('image')(req, res, async (err) => {
-        if (err) {
-          console.error(err);
-          // Handle upload error (e.g., display an error message)
-          return;
-        }
+      const runMiddleware = promisify(upload.single('image'));
 
-        const { filename } = req.file; // Get filename from Multer
-        const imageUrl = `/uploads/${filename}`; // Construct image URL path
+      await runMiddleware(req, res);
 
-        const newImage = new Image({ title, imageUrl });
-        await newImage.save();
+      const { filename } = req; // Get filename from Multer
+      console.log('File uploaded successfully', filename)
+      const imageUrl = `/uploads/${filename}`; // Construct image URL path
 
-        console.log('Image uploaded successfully!');
-        // Handle successful upload (e.g., show a success message, clear form)
-        setTitle('');
-        setSelectedFile(null);
-      });
+      const newPhoto = new Photo({ title, imageUrl });
+      await newPhoto.save();
+
+      console.log('Image uploaded successfully!', newPhoto);
+      // Handle successful upload (e.g., show a success message, clear form)
+      setTitle('');
+      setSelectedFile(null);
     } catch (error) {
       console.error(error);
       // Handle general errors
@@ -40,15 +38,18 @@ const ImageUploadForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="title">Title:</label>
-      <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-      <br />
-      <label htmlFor="image">Image:</label>
-      <input type="file" id="image" accept="image/*" onChange={(e) => setSelectedFile(e.target.files[0])} />
-      <br />
-      <button type="submit">Upload</button>
-    </form>
+    <div className='mt-5'>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="title">Title: </label>
+        <input className='mx-4 my-3 text-black' type="text" id="title" onChange={(e) => setTitle(e.target.value)} required />
+        <br />
+        <label htmlFor="image">Image:</label>
+        <input className='mx-2' type="file" id="image" accept="image/*" onChange={(e) => setSelectedFile(e.target.files[0])} />
+        <br />
+        <button className='my-4 bg-[#008080] py-1 px-4 rounded cursor-pointer' type="submit">Upload</button>
+      </form>
+    </div>
+    
   );
 };
 

@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { Product, User } from "./models";
+import { Child, Product, User } from "./models";
 import { connectToDB } from "./utils";
 import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
@@ -69,23 +69,27 @@ export const updateUser = async (formData) => {
   redirect("/dashboard/users");
 };
 
-export const addProduct = async (formData) => {
-  const { title, desc, price, stock, color, size } =
+export const addChild = async (formData) => {
+  const { name, studentID, gender, age, ekibiina, nationality, parentStatus, levelOfNeed, yearsLeftToGraduate, description } =
     Object.fromEntries(formData);
 
   try {
     connectToDB();
 
-    const newProduct = new Product({
-      title,
-      desc,
-      price,
-      stock,
-      color,
-      size,
+    const newChild = new Child({
+      name,
+      studentID,
+      gender,
+      age,
+      ekibiina,
+      nationality,
+      parentStatus,
+      levelOfNeed,
+      yearsLeftToGraduate,
+      description
     });
 
-    await newProduct.save();
+    await newChild.save();
   } catch (err) {
     console.log(err);
     throw new Error("Failed to create product!");
@@ -95,20 +99,24 @@ export const addProduct = async (formData) => {
   redirect("/dashboard/products");
 };
 
-export const updateProduct = async (formData) => {
-  const { id, title, desc, price, stock, color, size } =
+export const updateChild = async (formData) => {
+  const { name, studentID, gender, age, ekibiina, nationality, parentStatus, levelOfNeed, yearsLeftToGraduate, description } =
     Object.fromEntries(formData);
 
   try {
     connectToDB();
 
     const updateFields = {
-      title,
-      desc,
-      price,
-      stock,
-      color,
-      size,
+      name,
+      studentID,
+      gender,
+      age,
+      ekibiina,
+      nationality,
+      parentStatus,
+      levelOfNeed,
+      yearsLeftToGraduate,
+      description
     };
 
     Object.keys(updateFields).forEach(
@@ -116,10 +124,10 @@ export const updateProduct = async (formData) => {
         (updateFields[key] === "" || undefined) && delete updateFields[key]
     );
 
-    await Product.findByIdAndUpdate(id, updateFields);
+    await Child.findByIdAndUpdate(id, updateFields);
   } catch (err) {
     console.log(err);
-    throw new Error("Failed to update product!");
+    throw new Error("Failed to update child!");
   }
 
   revalidatePath("/dashboard/products");
@@ -140,15 +148,15 @@ export const deleteUser = async (formData) => {
   revalidatePath("/dashboard/products");
 };
 
-export const deleteProduct = async (formData) => {
+export const deleteChild = async (formData) => {
   const { id } = Object.fromEntries(formData);
 
   try {
     connectToDB();
-    await Product.findByIdAndDelete(id);
+    await Child.findByIdAndDelete(id);
   } catch (err) {
     console.log(err);
-    throw new Error("Failed to delete product!");
+    throw new Error("Failed to delete child!");
   }
 
   revalidatePath("/dashboard/products");

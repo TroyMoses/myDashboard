@@ -76,16 +76,69 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const childSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    studentID: {
+      type: String,
+      required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+    age: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    ekibiina: {
+      type: String,
+      required: true,
+    },
+    nationality: {
+      type: String,
+      required: true,
+    },
+    parentStatus: {
+      type: String,
+      required: true,
+    },
+    levelOfNeed: {
+      type: String,
+      required: true,
+    },
+    yearsLeftToGraduate: {
+      type: Number,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
 const photoSchema = new mongoose.Schema({
-  public_id: String,
-  secure_url: String,
+  title: {
+    type: String,
+    required: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
 }, 
   { timestamps: true }
 );
 
 export const User = mongoose.models.User || mongoose.model("User", userSchema);
-export const Product =
-  mongoose.models.Product || mongoose.model("Product", productSchema);
+export const Product = mongoose.models.Product || mongoose.model("Product", productSchema);
+export const Child = mongoose.models.Child || mongoose.model("Child", childSchema);
 const Photo = mongoose.models.Photo || mongoose.model("Photo", photoSchema);
 
 export default Photo;

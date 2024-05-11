@@ -1,4 +1,4 @@
-import { Product, User } from "./models";
+import { Child, User } from "./models";
 import { connectToDB } from "./utils";
 
 export const fetchUsers = async (q, page) => {
@@ -31,7 +31,7 @@ export const fetchUser = async (id) => {
   }
 };
 
-export const fetchProducts = async (q, page) => {
+export const fetchChilds = async (q, page) => {
   console.log(q);
   const regex = new RegExp(q, "i");
 
@@ -39,22 +39,22 @@ export const fetchProducts = async (q, page) => {
 
   try {
     connectToDB();
-    const count = await Product.find({ title: { $regex: regex } }).count();
-    const products = await Product.find({ title: { $regex: regex } })
+    const count = await Child.find({ name: { $regex: regex } }).count();
+    const childs = await Child.find({ name: { $regex: regex } })
       .limit(ITEM_PER_PAGE)
       .skip(ITEM_PER_PAGE * (page - 1));
-    return { count, products };
+    return { count, childs };
   } catch (err) {
     console.log(err);
-    throw new Error("Failed to fetch products!");
+    throw new Error("Failed to fetch children!");
   }
 };
 
-export const fetchProduct = async (id) => {
+export const fetchChild = async (id) => {
   try {
     connectToDB();
-    const product = await Product.findById(id);
-    return product;
+    const child = await Child.findById(id);
+    return child;
   } catch (err) {
     console.log(err);
     throw new Error("Failed to fetch product!");

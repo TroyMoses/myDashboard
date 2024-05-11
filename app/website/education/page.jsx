@@ -4,9 +4,8 @@ import logoImage from '../../public/images/logo1.png'
 import educationImage1 from '../../public/images/programs/1.jpg';
 import educationImage2 from '../../public/images/programs/2.jpg';
 import educationImage3 from '../../public/images/programs/3.jpg';
-import bannerImage from '../../public/images/banner.jpg'
 
-export default function HomePage() {
+export default function EducationPage() {
   
     return (
         <div className="scroll-smooth text-gray-800">
@@ -24,37 +23,37 @@ export default function HomePage() {
                         <nav className="pt-5">
                             <ul>
                                 <li>
-                                    <Link href="/" className="link">
+                                    <Link href="/website/home" className="link">
                                         Home
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/about" className="link">
+                                    <Link href="/website/about" className="link">
                                         About Us
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/programs" className="link">
+                                    <Link href="/website/programs" className="link">
                                         Programs
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/education" className="link bg-[#1f8cad] rounded-md">
+                                    <Link href="/website/education" className="link bg-[#1f8cad] rounded-md">
                                         Education
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/gallery" className="link">
+                                    <Link href="/website/gallery" className="link">
                                         Gallery
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/joinus" className="link">
+                                    <Link href="/website/joinus" className="link">
                                         Join Us
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/donate" className="link bg-amber-700 rounded-lg">
+                                    <Link href="/website/donate" className="link bg-amber-700 rounded-lg">
                                         Donate
                                     </Link>
                                 </li>
